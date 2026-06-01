@@ -1,53 +1,62 @@
-# Paper Reader — Claude Code Skill
+# Paper Reader — Claude Code 技能
 
-Deep academic paper analysis skill for Claude Code. Goes far beyond summarization: reconstructs the authors' reasoning from first principles, identifies core insights, exposes limitations, and derives future research directions.
+[English](README_EN.md) | **中文**
 
-## What It Does
+对学术论文进行深度分析与中文翻译的 Claude Code 技能。
 
-Given a PDF paper, this skill produces two comprehensive markdown files:
+## 功能
 
-1. **`<paper>_translation.md`** — Full Chinese translation preserving document hierarchy, logical flow, and technical detail.
+给定一篇 PDF 论文，自动生成两个完整的 Markdown 文件：
 
-2. **`<paper>_analysis.md`** — Research-level analysis covering:
-   - **Task** — Formal problem definition, inputs/outputs, optimization objective
-   - **Challenge** — Why existing methods fail, with evidence
-   - **Insight & Novelty** — Reconstructed reasoning, core insights, innovations with problem/insight/design/implementation/mechanism/effect breakdown
-   - **Method Dissection** — Component-by-component analysis, information flow, training pipeline
-   - **Experimental Analysis** — Beyond what authors claim: hidden findings, scaling behavior
-   - **Weaknesses** — Independent critical analysis (scenario, data, architecture, evaluation)
-   - **Future Opportunities** — Concrete research directions rated by venue potential
-   - **First-Principles Reconstruction** — How a strong researcher could derive this idea from scratch
-   - **Literature Relation** — Positioned against classical, baseline, and SOTA methods
-   - **Researcher Takeaways** — 30-second, 5-minute, and mindset-level summaries
-   - **Transferability** — Apply the core idea to 5 domains (forecasting, world models, agents, etc.)
+1. **`<论文名>_translation.md`** — 完整中文翻译，保留文档层次、逻辑流和技术细节。
 
-## Installation
+2. **`<论文名>_analysis.md`** — 研究级深度分析，包含：
+   - **任务定义** — 形式化问题、输入/输出、优化目标
+   - **核心挑战** — 为什么现有方法失败，附证据
+   - **洞察与创新** — 重构作者推理过程，逐项拆解创新点（问题/洞察/设计/实现/机制/效果）
+   - **方法拆解** — 逐模块分析、信息流、训练管线
+   - **实验分析** — 超越作者声明：隐含发现、缩放行为
+   - **潜在弱点** — 独立批判性分析（场景、数据、架构、评估）
+   - **未来方向** — 具体研究方向，按会议等级评分
+   - **第一性原理重构** — 如何从零推导出这个想法
+   - **文献定位** — 与经典方法、强基线、最新 SOTA 对比
+   - **研究者要点** — 30 秒/5 分钟/思维层面三种总结
+   - **可迁移性分析** — 将核心思想应用到 5 个领域（时序预测、金融预测、世界模型、智能体、多智能体）
+
+## 安装
 
 ```bash
-# Via Claude Code skill marketplace (recommended)
+# 通过 Claude Code 技能市场安装（推荐）
 claude skills install paper-reader
 
-# Or manually: copy paper-reader.md to your skills directory
+# 或手动复制到技能目录
 cp paper-reader.md ~/.claude/skills/
 ```
 
-## Usage
+## 使用
 
 ```
 /paper-reader /path/to/paper.pdf
 ```
 
-Or just say "read this paper" or "analyze this paper" and provide the PDF path.
+或者直接说"读一下这篇论文"、"分析这篇论文"，然后提供 PDF 路径。
 
-## Requirements
+## 核心理念
 
-- Claude Code with PDF reading capability
-- The PDF must be accessible from the working directory
+本技能的目标不是简单总结论文，而是：
 
-## Author
+- 从第一性原理重构作者的推理过程
+- 识别核心问题，理解现有方法为何失败
+- 发现关键洞察，分析创新点
+- 暴露局限性，推导未来研究方向
+- 严格以论文实际内容为依据，不凭空捏造
+- 区分"论文陈述了什么"和"我们可以推断出什么"
 
-Created from the deep-reading analysis framework.
+## 要求
 
-## License
+- Claude Code 需具备 PDF 阅读能力
+- PDF 文件需在工作目录中可访问
+
+## 许可
 
 MIT
