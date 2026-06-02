@@ -21,7 +21,6 @@ Given a PDF paper, this skill produces two comprehensive markdown files:
    - **First-Principles Reconstruction** — How a strong researcher could derive this idea from scratch
    - **Literature Relation** — Positioned against classical, baseline, and SOTA methods
    - **Researcher Takeaways** — 30-second, 5-minute, and mindset-level summaries
-   - **Transferability** — Apply the core idea to 5 domains (forecasting, world models, agents, etc.)
 
 ## Installation
 
