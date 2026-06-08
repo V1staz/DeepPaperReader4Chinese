@@ -45,6 +45,23 @@ insights, and produce two complete Markdown files in Chinese.
    referenced repository/document. If external sources are used, clearly label
    them separately from paper evidence.
 
+## Markdown and LaTeX Rules
+
+1. Write math in Markdown-compatible LaTeX. Use `$...$` for inline math and
+   `$$...$$` for display math. Do not use `\(...\)` or `\[...\]` delimiters.
+2. Preserve LaTeX commands with literal backslashes in the final Markdown file.
+   For example, write `$4.22 \times 10^{20}$`, not `\(4.22\times10^{20}\)`,
+   `4.22 times 10^20`, or `4.22 x 10^20`.
+3. Reconstruct malformed extracted formulas into valid LaTeX when the PDF text
+   extraction drops symbols, spacing, superscripts, subscripts, or Greek letters.
+   If the formula cannot be recovered from the paper, write
+   `论文未提供足够证据。`
+4. Keep formulas in math mode even inside Chinese sentences and tables. In
+   Markdown tables, avoid raw `|` inside formulas; use `\mid`, `\vert`,
+   `\lVert...\rVert`, or move the formula outside the table.
+5. Do not wrap formulas in code backticks unless explicitly discussing source
+   code. Do not translate LaTeX operators or variables into Chinese inside math.
+
 ## Reading Workflow
 
 1. Extract readable text from the PDF. Prefer structured extraction when
@@ -279,6 +296,10 @@ Before reporting completion, verify:
 - Important figures, tables, appendices, equations, and algorithms were not
   skipped.
 - Claims with insufficient evidence explicitly say `论文未提供足够证据。`
+- Formula delimiters are Markdown-compatible: no `\(...\)` or `\[...\]`
+  delimiters remain; inline formulas use `$...$`, display formulas use
+  `$$...$$`, and LaTeX commands such as `\times`, `\sum`, `\mathbb`, `\le`,
+  subscripts, and superscripts are preserved correctly.
 
 After the two files are written, report the file paths and a concise Chinese
 summary of the most important insights found.
