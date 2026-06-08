@@ -1,53 +1,56 @@
-# Paper Reader — Claude Code Skill
+# Paper Reader
 
 **English** | [中文](README.md)
 
-Deep academic paper analysis skill for Claude Code. Goes far beyond summarization: reconstructs the authors' reasoning from first principles, identifies core insights, exposes limitations, and derives future research directions.
+A Codex skill for deep academic paper reading. Given a PDF paper, it creates a full Chinese translation and a Chinese research-level analysis focused on reconstructing the authors' reasoning, dissecting the method, interpreting experimental signals, exposing weaknesses, and deriving future research opportunities.
 
-## What It Does
+This repository also keeps compatibility with the older single-file Claude Code skill format:
 
-Given a PDF paper, this skill produces two comprehensive markdown files:
+- `SKILL.md`: standard Codex skill entrypoint.
+- `paper-reader.md`: legacy single-file Claude Code skill.
+- `agents/openai.yaml`: Codex UI metadata.
 
-1. **`<paper>_translation.md`** — Full Chinese translation preserving document hierarchy, logical flow, and technical detail.
+## Outputs
 
-2. **`<paper>_analysis.md`** — Research-level analysis covering:
-   - **Task** — Formal problem definition, inputs/outputs, optimization objective
-   - **Challenge** — Why existing methods fail, with evidence
-   - **Insight & Novelty** — Reconstructed reasoning, core insights, innovations with problem/insight/design/implementation/mechanism/effect breakdown
-   - **Method Dissection** — Component-by-component analysis, information flow, training pipeline
-   - **Experimental Analysis** — Beyond what authors claim: hidden findings, scaling behavior
-   - **Weaknesses** — Independent critical analysis (scenario, data, architecture, evaluation)
-   - **Future Opportunities** — Concrete research directions rated by venue potential
-   - **First-Principles Reconstruction** — How a strong researcher could derive this idea from scratch
-   - **Literature Relation** — Positioned against classical, baseline, and SOTA methods
-   - **Researcher Takeaways** — 30-second, 5-minute, and mindset-level summaries
+1. `<paper>_translation.md`: full Chinese translation preserving structure, logical flow, technical details, experimental findings, and formulas.
+2. `<paper>_analysis.md`: Chinese research-level analysis covering task formulation, challenges, insights and novelty, method dissection, experiments, weaknesses, future directions, first-principles reconstruction, literature positioning, and researcher takeaways.
+
+## Principles
+
+- All output files must be Chinese, except formulas, variable names, model names, dataset names, benchmarks, and code-like identifiers.
+- Every factual claim must be traceable to paper evidence.
+- The translation file should be faithful and should not add independent critique.
+- The analysis file must separate paper evidence from interpretation.
+- If evidence is insufficient, explicitly write: `论文未提供足够证据。`
+- Important tables, figures, equations, algorithms, and appendices must not be skipped.
 
 ## Installation
 
-```bash
-# Via Claude Code skill marketplace (recommended)
-claude skills install paper-reader
+### Codex
 
-# Or manually: copy paper-reader.md to your skills directory
+Install this repository as a Codex skill directory:
+
+```bash
+git clone https://github.com/V1staz/DeepPaperReader4Chinese.git ~/.codex/skills/paper-reader
+```
+
+Restart Codex after installation.
+
+### Legacy Claude Code
+
+If your environment still uses the single-file Claude Code skill format:
+
+```bash
 cp paper-reader.md ~/.claude/skills/
 ```
 
 ## Usage
 
+```text
+Use $paper-reader to analyze /path/to/paper.pdf
 ```
-/paper-reader /path/to/paper.pdf
-```
 
-Or just say "read this paper" or "analyze this paper" and provide the PDF path.
-
-## Requirements
-
-- Claude Code with PDF reading capability
-- The PDF must be accessible from the working directory
-
-## Author
-
-Created from the deep-reading analysis framework.
+You can also ask in natural language, such as "read this paper" or "deeply analyze this PDF", and provide the paper path.
 
 ## License
 
