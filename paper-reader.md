@@ -1,22 +1,23 @@
 ---
 name: paper-reader
 description: >-
-  Deep academic paper reading for PDF papers: produce a full Chinese
-  translation and a Chinese research-level analysis grounded in paper evidence,
-  including task formulation, challenges, insights, methods, experiments,
-  weaknesses, future directions, first-principles reconstruction, literature
-  positioning, and researcher takeaways. Use when the user asks
-  to read, translate, analyze, review, or deep dive into an academic paper/PDF,
-  invokes /paper-reader or $paper-reader, or provides a PDF path and requests
-  deep analysis.
+  Deep academic paper reading for PDF papers: produce a concise Chinese
+  logic reconstruction / translated reading note plus a Chinese research-level
+  analysis grounded in paper evidence, including task formulation, challenges,
+  insights, methods, experiments, weaknesses, future directions, first-principles
+  reconstruction, literature positioning, and researcher takeaways. Use when the
+  user asks to read, translate, analyze, review, or deep dive into an academic
+  paper/PDF, invokes /paper-reader or $paper-reader, or provides a PDF path and
+  requests deep analysis.
 ---
 
 # Paper Reader
 
-Use this skill to deep-read an academic PDF. The goal is not to summarize the
-paper superficially. Reconstruct the authors' reasoning, identify the core
-problem, explain why prior approaches are insufficient, extract the key
-insights, and produce two complete Markdown files in Chinese.
+Use this skill to deep-read an academic PDF. The goal is not to translate every
+sentence. Reconstruct the authors' reasoning, identify the core problem, explain
+why prior approaches are insufficient, extract the key insights, and produce two
+Markdown files in Chinese: one concise translated logic reconstruction and one
+research-level analysis.
 
 ## Inputs and Outputs
 
@@ -74,8 +75,18 @@ insights, and produce two complete Markdown files in Chinese.
    - method components and information flow
    - datasets, baselines, metrics, tables, figures, ablations, appendices
    - stated limitations and unstated failure modes
-3. Read figures, tables, equations, algorithms, and appendices. If tables
-   contain important results, reproduce them in Markdown in Chinese.
+3. Read figures, tables, equations, algorithms, and appendices, but extract them
+   at different granularity:
+   - Core methods, algorithms, definitions, equations, architectural diagrams,
+     main results, key ablations, and central claims must be preserved.
+   - Repetitive background, rhetorical setup, duplicated claims, routine dataset
+     descriptions, and boilerplate experimental details may be merged or omitted.
+   - Appendices and supplementary experiments should usually be summarized by
+     their purpose, evidence value, and conclusion. Only expand appendix content
+     when it contains essential proofs, implementation details needed to
+     understand the method, or results that materially change the interpretation.
+   - Reproduce a table only when exact numbers are central to the paper's
+     argument. Otherwise summarize the trend and cite the table/figure location.
 4. For long papers, process in chunks but keep a global outline so later
    sections do not contradict earlier evidence.
 5. Generate the translation first, then the analysis. Do not stop after only one
@@ -85,13 +96,28 @@ insights, and produce two complete Markdown files in Chinese.
 
 Create `<original_filename>_translation.md`.
 
-Translate the paper into Chinese so that a reader who has not seen the original
-paper can understand the complete technical content.
+This file is a Chinese translated reading note, not a sentence-by-sentence or
+paragraph-by-paragraph translation. It should let a reader who has not seen the
+original paper understand the author's argument and the complete core technical
+content while avoiding unnecessary bulk.
 
-- Preserve the original document hierarchy and logical flow.
-- Keep all important technical details, experimental findings, and claims.
+- Preserve the original document hierarchy at the section/subsection level, but
+  merge paragraphs when they play the same rhetorical role.
+- For each section, reconstruct the author's local logic: what question they are
+  answering, what evidence or design they introduce, and how the section advances
+  the paper's main argument.
+- Keep all core technical details: problem definition, assumptions, algorithmic
+  steps, formulas, architecture, training/inference flow, datasets, main metrics,
+  primary results, key ablations, and limitations.
+- Omit or compress nonessential content: generic motivation, repeated related
+  work descriptions, verbose dataset administration, implementation boilerplate,
+  and repeated conclusion phrases.
+- Handle appendices with a separate short section named `附录与补充材料概览`.
+  Describe the spirit and evidential role of each appendix. Supplemental
+  experiments can be one sentence or one bullet each unless their result changes
+  the interpretation of the main method.
 - Do not add independent critique or interpretation in the translation file.
-- Do not overly compress. Condense only repetitive phrasing, not information.
+- Do not omit core algorithms, core ideas, central evidence, or result trends.
 - Keep formulas unchanged when translating them would reduce clarity.
 - When an English technical term is important, include it once in parentheses
   after the Chinese term.
@@ -292,9 +318,12 @@ Before reporting completion, verify:
 - Both files are entirely Chinese except formulas, identifiers, method names,
   dataset names, benchmark names, and code-like tokens.
 - The translation file does not contain independent critique.
+- The translation file reconstructs section-level and paragraph-group-level
+  logic instead of translating sentence by sentence.
 - The analysis file separates paper evidence from interpretation.
-- Important figures, tables, appendices, equations, and algorithms were not
-  skipped.
+- Core figures, tables, equations, and algorithms were preserved or summarized
+  with cited locations; appendices were reviewed and summarized at appropriate
+  granularity.
 - Claims with insufficient evidence explicitly say `论文未提供足够证据。`
 - Formula delimiters are Markdown-compatible: no `\(...\)` or `\[...\]`
   delimiters remain; inline formulas use `$...$`, display formulas use
