@@ -5,29 +5,41 @@ description: >-
   logic reconstruction / translated reading note plus a Chinese research-level
   analysis grounded in paper evidence, including task formulation, challenges,
   insights, methods, experiments, weaknesses, future directions, first-principles
-  reconstruction, literature positioning, and researcher takeaways. Use when the
-  user asks to read, translate, analyze, review, or deep dive into an academic
-  paper/PDF, invokes /paper-reader or $paper-reader, or provides a PDF path and
-  requests deep analysis.
+  reconstruction, literature positioning, and researcher takeaways. Also supports
+  a fast-report mode that creates one Chinese Markdown report focused on task
+  definition, method details, experiments, first-principles reconstruction, and
+  literature positioning. Use when the user asks to read, translate, analyze,
+  review, quickly read, make a fast report, or deep dive into an academic
+  paper/PDF, invokes /paper-reader or $paper-reader, or provides a PDF path.
 ---
 
 # Paper Reader
 
-Use this skill to deep-read an academic PDF. The goal is not to translate every
-sentence. Reconstruct the authors' reasoning, identify the core problem, explain
-why prior approaches are insufficient, extract the key insights, and produce two
-Markdown files in Chinese: one concise translated logic reconstruction and one
-research-level analysis.
+Use this skill to read an academic PDF in either full mode or fast-report mode.
+The goal is not to translate every sentence. Reconstruct the authors' reasoning,
+identify the core problem, explain why prior approaches are insufficient, and
+extract the key insights.
+
+- **Full mode**: produce two Chinese Markdown files: one concise translated
+  logic reconstruction and one research-level analysis.
+- **Fast-report mode**: produce one Chinese Markdown file focused on task
+  definition, method details, experiments, first-principles reconstruction, and
+  literature positioning.
 
 ## Inputs and Outputs
 
 - If the user did not provide a PDF path, ask for one concise question.
 - Resolve the PDF path before working. Put all outputs in the same directory as
   the PDF.
-- Create exactly these two files:
+- Use fast-report mode when the user asks for "fast", "quick", "快速",
+  "速读", "快读", "快速报告", "fast report", or requests a single compact
+  paper report. Otherwise use full mode.
+- In full mode, create exactly these two files:
   - `<original_filename>_translation.md`
   - `<original_filename>_analysis.md`
-- Both files must be written entirely in Chinese. Section titles, table
+- In fast-report mode, create exactly this one file:
+  - `<original_filename>_fastreport.md`
+- All output files must be written entirely in Chinese. Section titles, table
   headers, explanations, and commentary must be Chinese. Mathematical formulas,
   variable names, method names, benchmark names, model names, code identifiers,
   and paper-internal identifiers may remain in their original form.
@@ -89,8 +101,78 @@ research-level analysis.
      argument. Otherwise summarize the trend and cite the table/figure location.
 4. For long papers, process in chunks but keep a global outline so later
    sections do not contradict earlier evidence.
-5. Generate the translation first, then the analysis. Do not stop after only one
-   file.
+5. In full mode, generate the translation first, then the analysis. Do not stop
+   after only one file. In fast-report mode, generate only the fast report.
+
+## Fast Report File
+
+Create `<original_filename>_fastreport.md`.
+
+This file is a compact Chinese research report for quickly understanding a paper
+without producing the full translation and analysis pair. It must still be
+grounded in paper evidence and preserve enough technical detail for a researcher
+to explain, compare, and potentially reproduce the method.
+
+Use this structure:
+
+### 1. 论文定位与一句话贡献
+
+- 论文解决的核心问题是什么？
+- 一句话说明最关键贡献。
+- 说明它属于哪个研究方向或技术路线。
+
+### 2. 任务定义
+
+- **输入**：模型、算法或系统接收什么？
+- **输出**：它要预测、生成、选择或优化什么？
+- **约束**：训练数据、监督信号、计算、交互、部署或任务假设是什么？
+- **优化目标**：列出主要 loss、reward、likelihood、matching objective 或评估目标；公式存在时保留公式。
+
+### 3. 实际方法细节
+
+不要只写模块名称。必须解释信息流、算法步骤、训练方式和计算细节。
+
+- **整体架构**：组件如何连接？每个组件输入/输出是什么？
+- **核心算法**：按步骤写清算法流程；论文有算法框、伪代码或公式时保留关键步骤。
+- **训练方式**：数据来源、采样方式、阶段训练、预训练/微调、损失项、优化器、batch、序列长度、模型规模等；论文未给出的项目写 `论文未提供足够证据。`
+- **推理方式**：测试或部署时如何从输入得到输出？是否有采样、搜索、规划、解码、后处理？
+- **关键实现细节**：tokenizer、action space、memory、masking、attention、scheduler、augmentation、normalization 等影响复现或理解的细节。
+
+### 4. 实验分析
+
+- **实验设置**：数据集、任务、指标、baseline、评估协议。
+- **主结果**：最关键表格/图证明了什么？哪些比较真正支撑主张？
+- **消融实验**：哪些组件被验证为必要？结果说明了什么机制？
+- **失败与边界**：论文报告的失败、limitations，以及从结果中能看出的未验证声明。
+
+### 5. 第一性原理重构
+
+用连续问题链重构方法如何自然出现：
+
+> Q1：已有方法的默认假设是什么？
+> ↓
+> Q2：该假设在本文任务中为什么失败？
+> ↓
+> Q3：真正缺失的信息、结构或监督信号是什么？
+> ↓
+> Q4：作者如何把这个缺失项变成可学习对象？
+> ↓
+> Q5：为什么最终结构能解决这个问题？
+
+### 6. 文献定位
+
+将论文放入相关研究谱系，至少覆盖经典方法、强基线和近期相近工作。每个对比说明：
+
+- 相似点
+- 差异点
+- 本文优势
+- 本文劣势或未覆盖场景
+
+### 7. 速读结论
+
+- **最值得记住的创新点**：3-5 条。
+- **复现或迁移时最关键的技术细节**：3-5 条。
+- **后续研究切入点**：2-4 条，必须从论文证据或缺口推出。
 
 ## Translation File
 
@@ -314,13 +396,19 @@ The analysis must use the structure below. Keep headings in Chinese.
 
 Before reporting completion, verify:
 
-- Both required files exist in the PDF directory.
-- Both files are entirely Chinese except formulas, identifiers, method names,
+- In full mode, both required files exist in the PDF directory.
+- In fast-report mode, the single required fast report exists in the PDF
+  directory and no translation/analysis pair is required unless the user also
+  requested full mode.
+- All output files are entirely Chinese except formulas, identifiers, method names,
   dataset names, benchmark names, and code-like tokens.
-- The translation file does not contain independent critique.
-- The translation file reconstructs section-level and paragraph-group-level
-  logic instead of translating sentence by sentence.
-- The analysis file separates paper evidence from interpretation.
+- In full mode, the translation file does not contain independent critique.
+- In full mode, the translation file reconstructs section-level and
+  paragraph-group-level logic instead of translating sentence by sentence.
+- In full mode, the analysis file separates paper evidence from interpretation.
+- In fast-report mode, the report contains task definition, actual method
+  details including algorithms/training/computation details, experiment
+  analysis, first-principles reconstruction, and literature positioning.
 - Core figures, tables, equations, and algorithms were preserved or summarized
   with cited locations; appendices were reviewed and summarized at appropriate
   granularity.
@@ -330,5 +418,5 @@ Before reporting completion, verify:
   `$$...$$`, and LaTeX commands such as `\times`, `\sum`, `\mathbb`, `\le`,
   subscripts, and superscripts are preserved correctly.
 
-After the two files are written, report the file paths and a concise Chinese
-summary of the most important insights found.
+After the required file or files are written, report the file paths and a
+concise Chinese summary of the most important insights found.

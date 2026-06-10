@@ -2,7 +2,7 @@
 
 **English** | [中文](README.md)
 
-A Codex skill for deep academic paper reading. Given a PDF paper, it creates a concise Chinese translated reading note and a Chinese research-level analysis focused on reconstructing the authors' reasoning, dissecting the method, interpreting experimental signals, exposing weaknesses, and deriving future research opportunities.
+A Codex skill for academic paper reading. Given a PDF paper, it can create the full pair of a concise Chinese translated reading note and a Chinese research-level analysis, or a single Chinese fast report. It focuses on reconstructing the authors' reasoning, dissecting the method, interpreting experimental signals, exposing weaknesses, and deriving future research opportunities.
 
 This repository also keeps compatibility with the older single-file Claude Code skill format:
 
@@ -12,8 +12,14 @@ This repository also keeps compatibility with the older single-file Claude Code 
 
 ## Outputs
 
+Full mode creates:
+
 1. `<paper>_translation.md`: concise Chinese translated reading note preserving section structure, author logic, core algorithms, key technical details, major experimental findings, and formulas without translating word by word.
 2. `<paper>_analysis.md`: Chinese research-level analysis covering task formulation, challenges, insights and novelty, method dissection, experiments, weaknesses, future directions, first-principles reconstruction, literature positioning, and researcher takeaways.
+
+Fast-report mode creates:
+
+1. `<paper>_fastreport.md`: a single Chinese fast report covering task definition, concrete method details including algorithms, training and computation details, experiment analysis, first-principles reconstruction, and literature positioning.
 
 ## Principles
 
@@ -51,6 +57,14 @@ Use $paper-reader to analyze /path/to/paper.pdf
 ```
 
 You can also ask in natural language, such as "read this paper" or "deeply analyze this PDF", and provide the paper path.
+
+Fast-report mode:
+
+```text
+Use $paper-reader to make a fast report for /path/to/paper.pdf
+```
+
+You can also ask for a quick read or fast report in natural language and provide the paper path.
 
 ## License
 

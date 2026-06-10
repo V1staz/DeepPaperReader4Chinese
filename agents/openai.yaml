@@ -1,4 +1,4 @@
 interface:
   display_name: "Paper Reader"
-  short_description: "Chinese logic reconstruction and deep analysis for academic PDFs"
-  default_prompt: "Use $paper-reader to reconstruct and deeply analyze this academic PDF in Chinese."
+  short_description: "Chinese fast reports and deep analysis for papers"
+  default_prompt: "Use $paper-reader to make a Chinese fast report or deep analysis for this academic PDF."
